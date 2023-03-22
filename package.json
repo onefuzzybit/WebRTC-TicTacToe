@@ -1,0 +1,14 @@
+{
+  "name": "webrtc-tic-tac-toe",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onefuzzybit/WebRTC-TicTacToe.git"
+  },
+  "author": "One Fuzzy Bit",
+  "private": true,
+  "workspaces":[
+	"./signalling-client"
+  ]
+}

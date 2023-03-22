@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"jsx": "react-jsx",
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"target": "ESNext",
+		"moduleResolution": "node"
+	},
+	"include": [
+		"src/**.ts",
+		"src/**.tsx"
+	]
+}
