@@ -2,7 +2,7 @@ import { SquareState } from "./types";
 
 export function Board({ state }: {state: SquareState[]}) {
 	return <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridTemplateRows: '1fr 1fr 1fr', width: '100%', height: '100%'}}>
-		{state.map((square) => <BoardSquare state={square} />)}
+		{state.map((square, i) => <BoardSquare key={i} state={square} />)}
 	</div>
 }
 

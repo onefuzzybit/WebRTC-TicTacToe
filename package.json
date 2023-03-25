@@ -9,6 +9,7 @@
   "author": "One Fuzzy Bit",
   "private": true,
   "workspaces":[
-	"./signalling-client"
+	"./signalling-client",
+	"./signalling-connect"
   ]
 }

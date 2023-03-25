@@ -5,6 +5,7 @@ export enum SquareState {
 }
 
 export enum FlowState {
+	EstablishingConnection,
 	PendingStart,
 	TurnX,
 	TurnO,

@@ -1,0 +1,23 @@
+{
+  "name": "signalling-connect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/signalling-connect.umd.js",
+  "module": "./dist/signalling-connect.mjs",
+  "types": "./dist/signalling-connect.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/signalling-connect.mjs",
+      "require": "./dist/signalling-connect.umd.js"
+    }
+  },
+  "files": [
+	"dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+	"watch-connect": "vite build --watch"
+  },
+  "author": "One Fuzzy Bit",
+  "private": true
+}

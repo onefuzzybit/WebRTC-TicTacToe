@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "build": "vite build",
-	"watch": "vite build --watch"
+	"watch-client": "vite build --watch"
   },
   "author": "",
   "private": true,

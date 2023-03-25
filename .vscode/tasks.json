@@ -3,44 +3,84 @@
 	// for the documentation about the tasks.json format
 	"version": "2.0.0",
 	"tasks": [
-	  {
-		"label": "Run Watch Terminals",
-		"type": "shell",
-		"dependsOn": ["signalling-client", "tic-tac-toe"]
-	  },
-	  {
-		"label": "signalling-client",
-		"type": "npm",
-		"script": "watch",
-		"options": {
-			"cwd": "${workspaceFolder}/signalling-client"
+		{
+			"label": "Run Watch Terminals",
+			"type": "shell",
+			"dependsOn": [
+				"tic-tac-toe",
+				"signalling-connect",
+				"signalling-client",
+				"signalling-server"
+			],
+			"problemMatcher": []
 		},
-		"presentation": {
-			"echo": true,
-			"reveal": "always",
-			"focus": false,
-			"panel": "shared",
-			"showReuseMessage": true,
-			"clear": false,
-			"group": "dev"
-		}
-	  },
-	  {
-		"label": "tic-tac-toe",
-		"type": "npm",
-		"script": "start",
-		"options": {
-			"cwd": "${workspaceFolder}/tic-tac-toe-ms1"
+		{
+			"label": "signalling-client",
+			"type": "npm",
+			"script": "watch-client",
+			"options": {
+				"cwd": "${workspaceFolder}/signalling-client"
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"group": "dev"
+			}
 		},
-		"presentation": {
-			"echo": true,
-			"reveal": "always",
-			"focus": false,
-			"panel": "shared",
-			"showReuseMessage": true,
-			"clear": false,
-			"group": "dev"
-		}
-	  }
+		{
+			"label": "tic-tac-toe",
+			"type": "npm",
+			"script": "start",
+			"options": {
+				"cwd": "${workspaceFolder}/tic-tac-toe-ms1"
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"group": "dev"
+			}
+		},
+		{
+			"label": "signalling-connect",
+			"type": "npm",
+			"script": "watch-connect",
+			"options": {
+				"cwd": "${workspaceFolder}/signalling-connect"
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"group": "dev"
+			}
+		},
+		{
+			"label": "signalling-server",
+			"type": "npm",
+			"script": "watch-server",
+			"options": {
+				"cwd": "${workspaceFolder}/signalling-server"
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"group": "dev"
+			}
+		},
 	]
   }
