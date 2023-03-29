@@ -6,20 +6,39 @@ export const SIGNAL_MESSAGE_IDENTIFIER: SIGNAL_MESSAGE_IDENTIFIER_TYPE =  '__SIG
 export enum SignallingMessages {
 	Login='Login',
 	Ack='Ack',			// acknowledge message
+	Offer='Offer',
+	Answer='Answer',
+	Candidate='Candidate'
 }
 
-export interface SingallingMessageBase {
+export interface SignallingMessageBase {
 	sanity: SIGNAL_MESSAGE_IDENTIFIER_TYPE,
+	id: string
 }
 
-export interface LoginMessage extends SingallingMessageBase {
+export interface LoginMessage extends SignallingMessageBase {
 	type: SignallingMessages.Login
-	offer: RTCSessionDescriptionInit
+	offer: OfferMessage
 }
 
-export interface AckMessage extends SingallingMessageBase {
+export interface AckMessage extends SignallingMessageBase {
 	type: SignallingMessages.Ack
 	ack: SignallingMessages
 }
 
-export type SignallingMessage = LoginMessage | AckMessage
+export interface OfferMessage extends SignallingMessageBase {
+	offer: RTCSessionDescriptionInit
+	type: SignallingMessages.Offer
+}
+
+export interface AnswerMessage extends SignallingMessageBase {
+	answer: RTCSessionDescriptionInit
+	type: SignallingMessages.Answer
+}
+
+export interface CandidateMessage extends SignallingMessageBase {
+	type: SignallingMessages.Candidate
+	candidate: RTCIceCandidate
+}
+
+export type SignallingMessage = LoginMessage | AckMessage | OfferMessage | CandidateMessage | AnswerMessage

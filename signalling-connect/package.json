@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/signalling-connect.umd.js",
   "module": "./dist/signalling-connect.mjs",
-  "types": "./dist/signalling-connect.d.ts",
+  "types": "./dist/connect.d.ts",
   "exports": {
     ".": {
       "import": "./dist/signalling-connect.mjs",
@@ -12,12 +12,15 @@
     }
   },
   "files": [
-	"dist"
+    "dist"
   ],
   "scripts": {
     "build": "vite build",
-	"watch-connect": "vite build --watch"
+    "watch-connect": "vite build --watch"
   },
   "author": "One Fuzzy Bit",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "nanoid": "^3.3.6"
+  }
 }

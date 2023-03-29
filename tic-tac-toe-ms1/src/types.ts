@@ -7,6 +7,7 @@ export enum SquareState {
 export enum FlowState {
 	EstablishingConnection,
 	PendingStart,
+	InitiatingGame,
 	TurnX,
 	TurnO,
 	WinnerX,

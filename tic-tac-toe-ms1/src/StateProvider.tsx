@@ -1,9 +1,12 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { FlowState, GameState, Player, SquareState } from "types";
+import { createContext, ReactNode, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { FlowState, GameState, Player, SquareState } from "./types";
+import { SignallingClient } from "signalling-client";
+import { makeMove } from "./logic";
+import { sendTurnMessage, waitForRemoteTurn } from "./remoteTurnListener";
 
 export type GameStateContext = GameState & {
 	setFlowState: (v: FlowState) => void
-	setSquare: (square: number, value: SquareState) => void
+	setSquare: (square: number) => void
 }
 const Context = createContext<GameStateContext>({} as GameStateContext)
 
@@ -12,18 +15,23 @@ type Props = {
 	side: Player,
 	flowState: FlowState
 	setFlowState: (state: FlowState) => void
+	client: SignallingClient
 }
-export function GameStateProvider({children, side, flowState, setFlowState}: Props) {
-	const [board, setBoard] = useState<SquareState[]>(Array(length).fill(SquareState.Empty))
+export function GameStateProvider({children, side, flowState, setFlowState, client}: Props) {
+	const board = useRef<SquareState[]>(Array(9).fill(SquareState.Empty))
 
-	const setSquare = useMemo(() => (square: number, value: SquareState.O | SquareState.X) => {
-		if (square < 0 || square > 8) throw new Error(`Invalid square index ${square}`)
-		if (![SquareState.O, SquareState.X].includes(value)) throw new Error(`Invalid value ${value} for square ${square}`)
-		if (board[square] !== SquareState.Empty) throw new Error(`Square ${square} already contains value ${board[square]}`)
-		setBoard(board.splice(square, 1, value))
+	useEffect(() => { waitForRemoteTurn({client, board, setFlowState, remoteSide: side === Player.O ? Player.X : Player.O}) }, [])
+
+	const setSquare = useMemo(() => (square: number) => {
+		const res = makeMove(board.current, square, side === Player.X ? SquareState.X : SquareState.O)
+		if (res) {
+			board.current = res.newBoard
+			setFlowState(res.newFlowState)
+			sendTurnMessage({client, square, board, flowState: res.newFlowState})
+		}
 	}, [board])
 
-	const value = useMemo(() => ({ flowState, side, board, setFlowState, setSquare }), [board, flowState, side])
+	const value = useMemo(() => ({ flowState, side, board: board.current, setFlowState, setSquare }), [board.current, flowState, side])
 	return <Context.Provider value={value}>{children}</Context.Provider>
 }
 

@@ -12,11 +12,11 @@
     }
   },
   "files": [
-	"dist"
+    "dist"
   ],
   "scripts": {
     "build": "vite build",
-	"watch-client": "vite build --watch"
+    "watch-client": "vite build --watch"
   },
   "author": "",
   "private": true,
