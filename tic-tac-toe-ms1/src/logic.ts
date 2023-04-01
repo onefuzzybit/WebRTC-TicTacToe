@@ -1,14 +1,14 @@
 import { FlowState, Player, SquareState } from './types'
 
 const winningCombos = [
-	[0,1,2],
-	[3,4,5],
-	[6,7,8],
-	[0,4,8],
-	[2,4,6],
-	[0,3,6],
-	[1,4,7],
-	[2,5,8],
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8],
+	[0, 4, 8],
+	[2, 4, 6],
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
 ]
 export function findWinner(board: SquareState[]) {
 	for (const combo of winningCombos) {
@@ -21,7 +21,7 @@ export function makeMove(board: SquareState[], square: number, state: SquareStat
 	if (square < 0 || square > 8) throw new Error(`Invalid square index ${square}`)
 	if (state === SquareState.Empty) throw new Error(`Invalid new state ${state}`)
 	if (board[square] !== SquareState.Empty) return console.log('Square is already taken')
-	
+
 	const newBoard = [...board]
 	newBoard.splice(square, 1, state)
 

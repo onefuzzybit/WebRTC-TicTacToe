@@ -10,10 +10,10 @@ export function useSignallingClient(setFlowState: (flowState: FlowState) => void
 			host: 'localhost',
 			port: 9090,
 			timeout: 2000,
-			onStatusChange: (status) => { 
+			onStatusChange: (status) => {
 				status === ConnectionStatus.LoggedIn && setFlowState(FlowState.PendingStart)
 				status === ConnectionStatus.GameOn && setFlowState(FlowState.InitiatingGame)
-			}
+			},
 		})
 		client.current.login()
 	}, [])

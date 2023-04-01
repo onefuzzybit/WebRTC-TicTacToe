@@ -1,28 +1,28 @@
 {
-  "name": "signalling-connect",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./dist/signalling-connect.umd.js",
-  "module": "./dist/signalling-connect.mjs",
-  "types": "./dist/connect.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/signalling-connect.mjs",
-      "require": "./dist/signalling-connect.umd.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "vite build",
-    "watch-connect": "vite build --watch",
+	"name": "signalling-connect",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./dist/signalling-connect.umd.js",
+	"module": "./dist/signalling-connect.mjs",
+	"types": "./dist/connect.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/signalling-connect.mjs",
+			"require": "./dist/signalling-connect.umd.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "vite build",
+		"watch-connect": "vite build --watch",
 		"lint": "eslint ./src/",
-	"prepare": "mkdir -p ./dist"
-  },
-  "author": "One Fuzzy Bit",
-  "private": true,
-  "dependencies": {
-    "nanoid": "^3.3.6"
-  }
+		"prepare": "mkdir -p ./dist"
+	},
+	"author": "One Fuzzy Bit",
+	"private": true,
+	"dependencies": {
+		"nanoid": "^3.3.6"
+	}
 }

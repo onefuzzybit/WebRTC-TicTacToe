@@ -1,23 +1,27 @@
 {
-  "name": "webrtc-tic-tac-toe",
-  "version": "1.0.0",
-  "description": "",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/onefuzzybit/WebRTC-TicTacToe.git"
-  },
-  "author": "One Fuzzy Bit",
-  "private": true,
-  "workspaces": [
-    "./signalling-client",
-    "./signalling-connect",
-    "./signalling-server",
-    "./tic-tac-toe-ms1"
-  ],
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
-    "eslint": "^8.37.0",
-    "prettier": "2.8.7"
-  }
+	"name": "webrtc-tic-tac-toe",
+	"version": "1.0.0",
+	"description": "",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/onefuzzybit/WebRTC-TicTacToe.git"
+	},
+	"author": "One Fuzzy Bit",
+	"private": true,
+	"workspaces": [
+		"./signalling-client",
+		"./signalling-connect",
+		"./signalling-server",
+		"./tic-tac-toe-ms1"
+	],
+	"scripts": {
+		"pretty": "prettier --write ."
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.57.0",
+		"@typescript-eslint/parser": "^5.57.0",
+		"eslint": "^8.37.0",
+		"eslint-config-prettier": "^8.8.0",
+		"prettier": "2.8.7"
+	}
 }

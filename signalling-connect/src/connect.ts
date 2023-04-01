@@ -1,4 +1,14 @@
-import { AckMessage, AnswerMessage, CandidateMessage, LoginMessage, OfferMessage, SignallingMessage, SignallingMessages, SIGNAL_MESSAGE_IDENTIFIER, Sender } from './types'
+import {
+	AckMessage,
+	AnswerMessage,
+	CandidateMessage,
+	LoginMessage,
+	OfferMessage,
+	SignallingMessage,
+	SignallingMessages,
+	SIGNAL_MESSAGE_IDENTIFIER,
+	Sender,
+} from './types'
 import { nanoid } from 'nanoid'
 
 // start by setting up a local id.
@@ -17,7 +27,7 @@ export function validate(message: SignallingMessage) {
 }
 
 export function createLoginMessage(offer: OfferMessage): LoginMessage {
-	return { type: SignallingMessages.Login, ...baseMessage(), offer }	
+	return { type: SignallingMessages.Login, ...baseMessage(), offer }
 }
 
 export function createOfferMessage(offer: RTCSessionDescriptionInit): OfferMessage {
@@ -26,14 +36,14 @@ export function createOfferMessage(offer: RTCSessionDescriptionInit): OfferMessa
 
 export function createAnswerMessage(answer: RTCSessionDescriptionInit): AnswerMessage {
 	return { type: SignallingMessages.Answer, ...baseMessage(), answer }
-} 
+}
 
 export function createCandidateMessage(candidate: RTCIceCandidate): CandidateMessage {
 	return { type: SignallingMessages.Candidate, ...baseMessage(), candidate }
 }
 
 export function createAckMessage(ack: SignallingMessages): AckMessage {
-	return { type: SignallingMessages.Ack, sanity: SIGNAL_MESSAGE_IDENTIFIER ,ack, id: 'server' }
+	return { type: SignallingMessages.Ack, sanity: SIGNAL_MESSAGE_IDENTIFIER, ack, id: 'server' }
 }
 
 export function send(socket: Sender, message: SignallingMessage) {

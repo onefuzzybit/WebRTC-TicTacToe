@@ -1,1 +1,10 @@
-{}
+{
+	"printWidth": 130,
+	"useTabs": true,
+	"semi": false,
+	"singleQuote": true,
+	"trailingComma": "all",
+	"bracketSameLine": false,
+	"arrowParens": "always",
+	"embeddedLanguageFormatting": "off"
+}

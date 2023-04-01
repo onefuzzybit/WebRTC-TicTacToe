@@ -1,14 +1,14 @@
 import { WebSocket } from 'ws'
 
 export class GameSocket extends WebSocket implements GameSocket {
-	private gameUserId: string|undefined
+	private gameUserId: string | undefined
 
 	setGameUserId(id: string) {
 		this.gameUserId = id
 	}
 
 	getGameUserId(): string | undefined {
-		return this.gameUserId		
+		return this.gameUserId
 	}
 
 	static FromWebsocket(socket: WebSocket): GameSocket {

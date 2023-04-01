@@ -1,29 +1,29 @@
 {
-  "name": "signalling-client",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./dist/signalling-client.umd.js",
-  "module": "./dist/signalling-client.mjs",
-  "types": "./dist/signalling-client.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/signalling-client.mjs",
-      "require": "./dist/signalling-client.umd.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "vite build",
-    "watch-client": "vite build --watch",
+	"name": "signalling-client",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./dist/signalling-client.umd.js",
+	"module": "./dist/signalling-client.mjs",
+	"types": "./dist/signalling-client.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/signalling-client.mjs",
+			"require": "./dist/signalling-client.umd.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "vite build",
+		"watch-client": "vite build --watch",
 		"lint": "eslint ./src/"
-  },
-  "author": "",
-  "private": true,
-  "devDependencies": {
-    "@types/node": "^18.15.5",
-    "vite": "^4.2.1",
-    "vite-plugin-dts": "^2.1.0"
-  }
+	},
+	"author": "",
+	"private": true,
+	"devDependencies": {
+		"@types/node": "^18.15.5",
+		"vite": "^4.2.1",
+		"vite-plugin-dts": "^2.1.0"
+	}
 }

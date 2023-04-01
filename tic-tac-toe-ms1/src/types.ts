@@ -1,7 +1,7 @@
 export enum SquareState {
 	Empty,
 	X,
-	O
+	O,
 }
 
 export enum FlowState {

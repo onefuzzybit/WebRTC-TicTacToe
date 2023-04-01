@@ -1,5 +1,15 @@
-
-import { createLoginMessage, OfferMessage, send, SignallingMessage, SignallingMessages, createAnswerMessage, createCandidateMessage, AnswerMessage, CandidateMessage, createOfferMessage } from 'signalling-connect'
+import {
+	createLoginMessage,
+	OfferMessage,
+	send,
+	SignallingMessage,
+	SignallingMessages,
+	createAnswerMessage,
+	createCandidateMessage,
+	AnswerMessage,
+	CandidateMessage,
+	createOfferMessage,
+} from 'signalling-connect'
 import { ConnectionStatus, SignallingClient } from './types'
 
 type SignallingClientConfig = {
@@ -23,9 +33,9 @@ export function NewSignallingClient(config: SignallingClientConfig): SignallingC
 		login,
 		outgoing: null,
 		incoming: null,
-	};
+	}
 
-	(window as unknown as {sc:SignallingClient}).sc = client
+	;(window as unknown as { sc: SignallingClient }).sc = client
 
 	function setDataChannel(channel: RTCDataChannel, out: boolean) {
 		channel.onopen = () => {
@@ -80,10 +90,15 @@ export function NewSignallingClient(config: SignallingClientConfig): SignallingC
 		}
 
 		switch (message.type) {
-		case SignallingMessages.Ack: if (message.ack === SignallingMessages.Login) setStatus(ConnectionStatus.LoggedIn); break
-		case SignallingMessages.Offer: return handleOffer(message as OfferMessage)
-		case SignallingMessages.Answer: return handleAnswer(message as AnswerMessage)
-		case SignallingMessages.Candidate: return handleCandidate(message as CandidateMessage)
+			case SignallingMessages.Ack:
+				if (message.ack === SignallingMessages.Login) setStatus(ConnectionStatus.LoggedIn)
+				break
+			case SignallingMessages.Offer:
+				return handleOffer(message as OfferMessage)
+			case SignallingMessages.Answer:
+				return handleAnswer(message as AnswerMessage)
+			case SignallingMessages.Candidate:
+				return handleCandidate(message as CandidateMessage)
 		}
 	}
 
