@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "watch-server": "nodemon ./src/server.ts"
+    "watch-server": "nodemon --delay 500ms ./src/server.ts "
   },
   "author": "One Fuzzy Bit",
   "private": true,
@@ -14,5 +14,11 @@
   },
   "dependencies": {
     "ws": "^8.13.0"
+  },
+  "nodemonConfig": {
+	"watch": [
+		"./src/",
+		"../signalling-connect/dist/"
+	]
   }
 }

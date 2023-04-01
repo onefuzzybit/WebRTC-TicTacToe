@@ -15,23 +15,6 @@
 			"problemMatcher": []
 		},
 		{
-			"label": "signalling-client",
-			"type": "npm",
-			"script": "watch-client",
-			"options": {
-				"cwd": "${workspaceFolder}/signalling-client"
-			},
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": false,
-				"panel": "shared",
-				"showReuseMessage": true,
-				"clear": false,
-				"group": "dev"
-			}
-		},
-		{
 			"label": "tic-tac-toe",
 			"type": "npm",
 			"script": "start",

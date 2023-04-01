@@ -16,7 +16,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "watch-connect": "vite build --watch"
+    "watch-connect": "vite build --watch",
+	"prepare": "mkdir -p ./dist"
   },
   "author": "One Fuzzy Bit",
   "private": true,
