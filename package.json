@@ -10,6 +10,8 @@
   "private": true,
   "workspaces":[
 	"./signalling-client",
-	"./signalling-connect"
+	"./signalling-connect",
+	"./signalling-server",
+	"./tic-tac-toe-ms1"
   ]
 }

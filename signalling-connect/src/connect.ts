@@ -40,5 +40,5 @@ export function send(socket: WebSocket, message: SignallingMessage) {
 	validate(message)
 	socket.send(JSON.stringify(message))
 }
- 
+
 export * from './types'

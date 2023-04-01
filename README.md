@@ -15,20 +15,24 @@ The project is built as a monorepo with 4 components (folders):
 4. tic-tac-toe-ms1 - React app that implements the peer-2-peer tic-tac-toe game over a connection handler. It uses the signalling-client to connect to the signalling-server and pass messages to peer. 
 
 ## Building and running the project.
+The root folder of the project includes a package.json file with 'workspaces' defined to let npm know about all the projects in the repo. This means that the dependant packages can find the dependencies in node_modules even without installing them, and that npm automatically installs dependencies for all projects. So the first thing to do is run `npm install` on the root folder.
+
 **Using vscode tasks**   
-There's a vscode task in place that starts up a watch on all 4 components. To run it, hit ctrl+shift+p -> `Tasks: Run Task` -> `Run Watch Terminals`   
+There's a vscode task in place that starts up a watch on the projects and dependencies. To run it, hit ctrl+shift+p -> `Tasks: Run Task` -> `Run Watch Terminals`   
 ```
-**Note** When you run the watch terminals all project try to build at once. Since there are dependencies between the components, some of them will fail due to the dependency not being built yet. If that happens - simply ctrl+c the failing component terminal, and run the `Run Watch Terminals` task again.
+**Note** When you run the watch terminals the server project often loads before the dependency (signalling-connect) finishes building. In this case there will be an error message, but a few seconds later (when the dependency will finish building) the server will restart and load successfully.
 ```
 
 **Building manually**  
-The root folder of the project includes a package.json file with 'workspaces' defined for supporting dependencies. This means that the dependant packages can find the dependencies in node_modules even without installing them. So the first thing to do is run `npm install` on the root folder.
+Open 3 terminals, cd into the relevant projects, and run the appropriate npm install command. It's best to do this in order:
+1. signalling-connect: `cd signalling-connect && npm run watch-connect`
+2. signalling-server: `cd signalling-server && npm run watch-server`
+3. tic-tac-toe: `cd tic-tac-toe-ms1 && npm start` // builds and watches the app
 
-Then cd to the folders in the following order and build them. Run each command from the root of the project:
-1. signalling-connect: `cd signalling-connect && npm install && npm run build`
-2. signalling-client: `cd signalling-client && npm install && npm run build`
-3. signalling-server: `cd signalling-server && npm install && npm run watch` // builds and watches the server - keep it up
-4. tic-tac-toe: `cd tic-tac-toe-ms1 && npm start` // builds and watches the app
+We don't need to manually build the `signalling-client` package since it is aliased in the `tic-tac-toe-ms1` vite.config.ts file. So it's built as part of building the game.
+
+We DO need to build the signalling-connect folder, because vite doesn't support server-side code. So we build the library separately for the server, and 
+the server nodemon configuration listens for changes to the dist folder of the library.
 
 **Running the game**  
 The default application port is `5173`, so once everything is built, all you need to do is open 2 browser tabs, and point both to localhost:5173. When you do, wait for the first browser to display the status message 'Waiting for opponent' before opening the second browser window.

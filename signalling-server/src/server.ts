@@ -2,7 +2,7 @@ import { Server, WebSocket, RawData} from 'ws'
 import { IncomingMessage } from 'http'
 import { createAckMessage, LoginMessage, send, SignallingMessages, validate, AnswerMessage, CandidateMessage, OfferMessage } from 'signalling-connect'
 import { GameSocket } from './GameSocket'
-
+ 
 type UserData = { offer: OfferMessage, socket: GameSocket, match?: string }
 type Users = { [id: string]: UserData }
 
@@ -105,3 +105,5 @@ function handleCandidate(conn: WebSocket, message: CandidateMessage) {
 	send(users[match].socket, message)
 }
 
+// required in order to make sure the process exists when there's a change to the code in dev mode (nodemon)
+process.on('SIGINT', () => { process.exit(); });
