@@ -1,4 +1,11 @@
 {
 	"typescript.preferences.importModuleSpecifier": "relative",
-	"javascript.preferences.importModuleSpecifier": "relative"
+	"javascript.preferences.importModuleSpecifier": "relative",
+	"editor.tabSize": 2,
+	"editor.indentSize": "tabSize",
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"files.autoSave": "afterDelay",
 }

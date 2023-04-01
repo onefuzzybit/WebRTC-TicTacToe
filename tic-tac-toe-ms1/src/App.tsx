@@ -16,19 +16,19 @@ export function App() {
 
 	function render() {
 		switch (flowState) {
-			case FlowState.EstablishingConnection:
-			case FlowState.PendingStart:
-			case FlowState.InitiatingGame: return <WelcomeScreen flowState={flowState} />
-			default: return <>
-				<GameStateProvider
-					side={player} 
-					flowState={flowState}
-					setFlowState={setFlowState}
-					client={client}
-				>
-					<GameBoard />
-				</GameStateProvider>
-			</>
+		case FlowState.EstablishingConnection:
+		case FlowState.PendingStart:
+		case FlowState.InitiatingGame: return <WelcomeScreen flowState={flowState} />
+		default: return <>
+			<GameStateProvider
+				side={player} 
+				flowState={flowState}
+				setFlowState={setFlowState}
+				client={client}
+			>
+				<GameBoard />
+			</GameStateProvider>
+		</>
 		}
 	}
 

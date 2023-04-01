@@ -12,6 +12,6 @@
 		"outDir": "./dist"
 	},
 	"include": [
-		"./src/**.ts", "../signalling-server/src/GameSocket.ts",
+		"./src/**.ts",
 	]
 }

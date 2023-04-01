@@ -42,3 +42,7 @@ export interface CandidateMessage extends SignallingMessageBase {
 }
 
 export type SignallingMessage = LoginMessage | AckMessage | OfferMessage | CandidateMessage | AnswerMessage
+
+export interface Sender {
+	send(data: string): void
+}

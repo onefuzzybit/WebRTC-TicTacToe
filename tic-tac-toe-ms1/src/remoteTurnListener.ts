@@ -1,7 +1,7 @@
-import { MutableRefObject } from "react";
-import { SignallingClient } from "signalling-client";
-import { makeMove } from "./logic";
-import { FlowState, Player, SquareState } from "./types";
+import { MutableRefObject } from 'react'
+import { SignallingClient } from 'signalling-client'
+import { makeMove } from './logic'
+import { FlowState, Player, SquareState } from './types'
 import equal from 'array-equal'
 
 type Args = {
@@ -14,7 +14,7 @@ let initialized = false
 export function waitForRemoteTurn({ client, board, setFlowState, remoteSide }: Args) {
 	if (initialized) return
 	initialized = true
-	client.incoming.addEventListener('message', (e) => {
+	client.incoming.addEventListener('message', (e: MessageEvent) => {
 		const message = JSON.parse(e.data)
 		if (message.type !== 'Turn') return
 		const { remoteSquare, remoteBoard, remoteFlowState } = message as { remoteSquare: number, remoteBoard: SquareState[], remoteFlowState: FlowState }

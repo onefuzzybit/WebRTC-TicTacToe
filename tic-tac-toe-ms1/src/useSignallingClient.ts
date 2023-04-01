@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import { NewSignallingClient, ConnectionStatus } from "signalling-client";
-import { FlowState } from "./types";
+import { useEffect, useRef } from 'react'
+import { NewSignallingClient, ConnectionStatus } from 'signalling-client'
+import { FlowState } from './types'
 
 export function useSignallingClient(setFlowState: (flowState: FlowState) => void) {
 	const client = useRef<ReturnType<typeof NewSignallingClient>>()

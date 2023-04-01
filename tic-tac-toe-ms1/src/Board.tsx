@@ -1,4 +1,4 @@
-import { Player, SquareState } from "./types";
+import { SquareState } from './types'
 
 type BoardProps = {
 	state: SquareState[]

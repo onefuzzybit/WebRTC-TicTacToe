@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { Board } from "./Board";
-import { FlowState, SquareState } from "./types";
+import { useEffect, useState } from 'react'
+import { Board } from './Board'
+import { FlowState, SquareState } from './types'
 
 export function WelcomeScreen(p: {flowState: FlowState}) {
 	const getMessage = () => {
 		switch (p.flowState) {
-			case FlowState.EstablishingConnection: return 'Connecting...'
-			case FlowState.PendingStart: return 'Waiting for opponent'
-			case FlowState.InitiatingGame: return 'Initiating game'
+		case FlowState.EstablishingConnection: return 'Connecting...'
+		case FlowState.PendingStart: return 'Waiting for opponent'
+		case FlowState.InitiatingGame: return 'Initiating game'
 		}
 	}
 

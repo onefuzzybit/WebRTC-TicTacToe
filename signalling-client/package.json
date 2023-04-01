@@ -16,7 +16,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "watch-client": "vite build --watch"
+    "watch-client": "vite build --watch",
+		"lint": "eslint ./src/"
   },
   "author": "",
   "private": true,

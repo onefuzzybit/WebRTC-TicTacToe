@@ -1,4 +1,4 @@
-import { AckMessage, AnswerMessage, CandidateMessage, LoginMessage, OfferMessage, SignallingMessage, SignallingMessages, SIGNAL_MESSAGE_IDENTIFIER } from "./types";
+import { AckMessage, AnswerMessage, CandidateMessage, LoginMessage, OfferMessage, SignallingMessage, SignallingMessages, SIGNAL_MESSAGE_IDENTIFIER, Sender } from './types'
 import { nanoid } from 'nanoid'
 
 // start by setting up a local id.
@@ -36,7 +36,7 @@ export function createAckMessage(ack: SignallingMessages): AckMessage {
 	return { type: SignallingMessages.Ack, sanity: SIGNAL_MESSAGE_IDENTIFIER ,ack, id: 'server' }
 }
 
-export function send(socket: WebSocket, message: SignallingMessage) {
+export function send(socket: Sender, message: SignallingMessage) {
 	validate(message)
 	socket.send(JSON.stringify(message))
 }

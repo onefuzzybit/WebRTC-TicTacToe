@@ -11,7 +11,7 @@ const pendingUsers: string[] = []
 
 function main() {
 	const port = 9090
-	const websocketServer = new Server({port}); 
+	const websocketServer = new Server({port}) 
 	websocketServer.on('connection', handleConnection)
 	console.log(`Webserver waiting for connections on port ${port}...`)
 }
@@ -45,25 +45,25 @@ function handleClose(conn: GameSocket) {
 }
 
 function handleMessage(conn: GameSocket, dataIn: RawData, _binary: boolean) {
-	let message; 
+	let message 
 	//accepting only JSON messages 
 	try {
-	   message = JSON.parse(dataIn.toString());
+		message = JSON.parse(dataIn.toString())
 
-	   // input check
-	   validate(message)
+		// input check
+		validate(message)
 	} catch (e) { 
-	   console.error(`Error! Expected JSON input. Aborting message handling: '${dataIn}'`, e); 
-	   message = {};
+		console.error(`Error! Expected JSON input. Aborting message handling: '${dataIn}'`, e) 
+		message = {}
 	}
 
 	console.log('Got message. Data: ', message)
 	
 	// run handler
 	switch (message.type) {
-		case SignallingMessages.Login: handleLogin(conn, message); break;
-		case SignallingMessages.Answer: handleAnswer(conn, message); break;
-		case SignallingMessages.Candidate: handleCandidate(conn, message); break;
+	case SignallingMessages.Login: handleLogin(conn, message); break
+	case SignallingMessages.Answer: handleAnswer(conn, message); break
+	case SignallingMessages.Candidate: handleCandidate(conn, message); break
 	}
 
 	// send ack for message received
@@ -106,4 +106,4 @@ function handleCandidate(conn: WebSocket, message: CandidateMessage) {
 }
 
 // required in order to make sure the process exists when there's a change to the code in dev mode (nodemon)
-process.on('SIGINT', () => { process.exit(); });
+process.on('SIGINT', () => { process.exit() })

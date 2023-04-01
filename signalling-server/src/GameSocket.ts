@@ -1,9 +1,4 @@
-import { WebSocket } from "ws";
-
-export interface GameSocket extends WebSocket {
-	setGameUserId(id: string): void,
-	getGameUserId(): string|undefined
-}
+import { WebSocket } from 'ws'
 
 export class GameSocket extends WebSocket implements GameSocket {
 	private gameUserId: string|undefined

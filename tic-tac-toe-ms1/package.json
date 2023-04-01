@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "vite"
+    "start": "vite",
+		"lint": "eslint ./src/"
   },
   "author": "One Fuzzy Bit",
   "private": true,

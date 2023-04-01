@@ -17,6 +17,7 @@
   "scripts": {
     "build": "vite build",
     "watch-connect": "vite build --watch",
+		"lint": "eslint ./src/",
 	"prepare": "mkdir -p ./dist"
   },
   "author": "One Fuzzy Bit",
