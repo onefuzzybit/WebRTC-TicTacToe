@@ -1,0 +1,20 @@
+{
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended",
+		"prettier"
+	],
+	"rules": {
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{ "ignoreRestSiblings": false, "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+		],
+		"quotes": ["error", "single"],
+		"indent": ["error", "tab"],
+		"semi": ["error", "never", { "beforeStatementContinuationChars": "always" }]
+	}
+}

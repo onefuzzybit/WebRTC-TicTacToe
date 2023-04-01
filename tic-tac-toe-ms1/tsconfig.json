@@ -7,8 +7,5 @@
 		"target": "ESNext",
 		"moduleResolution": "node"
 	},
-	"include": [
-		"src/**.ts",
-		"src/**.tsx"
-	]
+	"include": ["src/**.ts", "src/**.tsx"]
 }

@@ -6,8 +6,8 @@ export enum ConnectionStatus {
 }
 
 export type SignallingClient = {
-	connect: VoidFunction,
-	login(): Promise<void>,
-	outgoing: RTCDataChannel|null
-	incoming: RTCDataChannel|null
+	connect: VoidFunction
+	login(): Promise<void>
+	outgoing: RTCDataChannel | null
+	incoming: RTCDataChannel | null
 }

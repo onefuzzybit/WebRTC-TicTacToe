@@ -1,5 +1,15 @@
-
-import { createLoginMessage, OfferMessage, send, SignallingMessage, SignallingMessages, createAnswerMessage, createCandidateMessage, AnswerMessage, CandidateMessage, createOfferMessage } from 'signalling-connect'
+import {
+	createLoginMessage,
+	OfferMessage,
+	send,
+	SignallingMessage,
+	SignallingMessages,
+	createAnswerMessage,
+	createCandidateMessage,
+	AnswerMessage,
+	CandidateMessage,
+	createOfferMessage,
+} from 'signalling-connect'
 import { ConnectionStatus, SignallingClient } from './types'
 
 type SignallingClientConfig = {
@@ -10,8 +20,8 @@ type SignallingClientConfig = {
 }
 
 //TODO: make this part of the client config.
-let rtcConfig = {
-	iceServers: [{ url: 'stun:stun2.1.google.com:19302' }],
+const rtcConfig = {
+	iceServers: [{ urls: 'stun:stun2.1.google.com:19302' }],
 }
 export function NewSignallingClient(config: SignallingClientConfig): SignallingClient {
 	let status = ConnectionStatus.NotConnected
@@ -23,9 +33,9 @@ export function NewSignallingClient(config: SignallingClientConfig): SignallingC
 		login,
 		outgoing: null,
 		incoming: null,
-	};
+	}
 
-	(window as unknown as {sc:SignallingClient}).sc = client
+	;(window as unknown as { sc: SignallingClient }).sc = client
 
 	function setDataChannel(channel: RTCDataChannel, out: boolean) {
 		channel.onopen = () => {
@@ -64,7 +74,7 @@ export function NewSignallingClient(config: SignallingClientConfig): SignallingC
 
 	function onConnect() {
 		setStatus(ConnectionStatus.Connected)
-		console.log("Connected to signalling server")
+		console.log('Connected to signalling server')
 
 		// handle message whenever one arrives
 		socket.onmessage = handleMessage
@@ -80,10 +90,15 @@ export function NewSignallingClient(config: SignallingClientConfig): SignallingC
 		}
 
 		switch (message.type) {
-			case SignallingMessages.Ack: if (message.ack === SignallingMessages.Login) setStatus(ConnectionStatus.LoggedIn); break;
-			case SignallingMessages.Offer: return handleOffer(message as OfferMessage)
-			case SignallingMessages.Answer: return handleAnswer(message as AnswerMessage)
-			case SignallingMessages.Candidate: return handleCandidate(message as CandidateMessage)
+			case SignallingMessages.Ack:
+				if (message.ack === SignallingMessages.Login) setStatus(ConnectionStatus.LoggedIn)
+				break
+			case SignallingMessages.Offer:
+				return handleOffer(message as OfferMessage)
+			case SignallingMessages.Answer:
+				return handleAnswer(message as AnswerMessage)
+			case SignallingMessages.Candidate:
+				return handleCandidate(message as CandidateMessage)
 		}
 	}
 
@@ -91,12 +106,10 @@ export function NewSignallingClient(config: SignallingClientConfig): SignallingC
 		console.log('login')
 		if (!socket) await connect()
 
-		// @ts-ignore
-		rtc = new window.webkitRTCPeerConnection(rtcConfig as unknown as RTCConfiguration, { optional: [{ RtpDataChannels: true }] })
+		rtc = new RTCPeerConnection(rtcConfig)
 		rtc.onicecandidate = onIceCandidate
 
-		// @ts-ignore
-		const dataChannel = rtc.createDataChannel(location.search.substring(1), { reliable: true });
+		const dataChannel = rtc.createDataChannel(location.search.substring(1))
 		setDataChannel(dataChannel, true)
 
 		rtc.ondatachannel = (e) => {

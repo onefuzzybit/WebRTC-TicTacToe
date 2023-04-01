@@ -1,24 +1,25 @@
 {
-  "name": "signalling-server",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "watch-server": "nodemon --delay 500ms ./src/server.ts "
-  },
-  "author": "One Fuzzy Bit",
-  "private": true,
-  "devDependencies": {
-    "@types/ws": "^8.5.4",
-    "nodemon": "^2.0.22",
-    "ts-node": "^10.9.1"
-  },
-  "dependencies": {
-    "ws": "^8.13.0"
-  },
-  "nodemonConfig": {
-	"watch": [
-		"./src/",
-		"../signalling-connect/dist/"
-	]
-  }
+	"name": "signalling-server",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"watch-server": "nodemon --delay 500ms ./src/server.ts",
+		"lint": "eslint ./src/"
+	},
+	"author": "One Fuzzy Bit",
+	"private": true,
+	"devDependencies": {
+		"@types/ws": "^8.5.4",
+		"nodemon": "^2.0.22",
+		"ts-node": "^10.9.1"
+	},
+	"dependencies": {
+		"ws": "^8.13.0"
+	},
+	"nodemonConfig": {
+		"watch": [
+			"./src/",
+			"../signalling-connect/dist/"
+		]
+	}
 }

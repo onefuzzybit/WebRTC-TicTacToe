@@ -6,12 +6,7 @@
 		{
 			"label": "Run Watch Terminals",
 			"type": "shell",
-			"dependsOn": [
-				"tic-tac-toe",
-				"signalling-connect",
-				"signalling-client",
-				"signalling-server"
-			],
+			"dependsOn": ["tic-tac-toe", "signalling-connect", "signalling-server", "signalling-client"],
 			"problemMatcher": []
 		},
 		{
@@ -49,6 +44,23 @@
 			}
 		},
 		{
+			"label": "signalling-client",
+			"type": "npm",
+			"script": "watch-client",
+			"options": {
+				"cwd": "${workspaceFolder}/signalling-client"
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"group": "dev"
+			}
+		},
+		{
 			"label": "signalling-server",
 			"type": "npm",
 			"script": "watch-server",
@@ -64,6 +76,6 @@
 				"clear": false,
 				"group": "dev"
 			}
-		},
+		}
 	]
-  }
+}

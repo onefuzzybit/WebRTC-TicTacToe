@@ -11,7 +11,5 @@
 		"sourceMap": true,
 		"outDir": "./dist"
 	},
-	"include": [
-		"./src/**.ts", "../signalling-server/src/GameSocket.ts",
-	]
+	"include": ["./src/**.ts"]
 }
