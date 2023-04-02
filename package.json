@@ -15,7 +15,13 @@
 		"./tic-tac-toe-ms1"
 	],
 	"scripts": {
-		"pretty": "prettier --write ."
+		"pretty": "prettier --write .",
+		"gcp-set-account": "gcloud config set account onefuzzybit@gmail.com",
+		"gcp-login": "gcloud auth login",
+		"gcp-set-project": "gcloud config set project one-fuzzy-bit",
+		"gcp-get-server-ip": "gcloud compute instances describe webrtc-signalling-server --zone=europe-west1-b | grep natIP | awk '{print $2}'",
+		"ssh-server": "ssh onefuzzybit@$(npm run gcp-get-server-ip --silent)",
+		"deploy-server": "scp -r ./signalling-server onefuzzybit@$(npm run gcp-get-server-ip --silent):~"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.57.0",
