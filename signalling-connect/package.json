@@ -1,5 +1,5 @@
 {
-	"name": "@one-fuzzy-bit/signalling-connect",
+	"name": "@onefuzzybit/signalling-connect",
 	"version": "1.0.0",
 	"description": "",
 	"main": "./dist/signalling-connect.umd.js",
