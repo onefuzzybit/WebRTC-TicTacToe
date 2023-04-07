@@ -41,3 +41,44 @@ the server nodemon configuration listens for changes to the dist folder of the l
 
 **Running the game**  
 The default application port is `5173`, so once everything is built, all you need to do is open 2 browser tabs, and point both to localhost:5173. When you do, wait for the first browser to display the status message 'Waiting for opponent' before opening the second browser window.
+
+## Deployment
+
+The project deploys in 2 parts:
+
+1. The server deploys to a GCP compute engine
+2. The client deploys to a GCS bucket
+
+### Deployment assumptions
+
+The repo is written to be maintained by me (one fuzzy bit) - if you intend to replicate it, you would need to update the deployment scripts to use your
+resources names:
+
+1. the `gcp-set-account` script assumes my account name
+2. the `gcp-set-project` script assumes my gcp project name
+3. the `gcp-get-server-ip` script assumes the name i've given to the compute engine running the signalling server code.
+4. ssh-ing the server assumes the server added the public key of my local host machine as an authorized key, and the username on that server.
+5. Server and package deployment assumes you have configured a valid .npmrc file in your host, which contains a personal access token supporting github package publishing and installing
+
+### Connecting to gcp cloud
+
+1. `npm run gcp-login` and follow the terminal instructions (cli based login to your gcp account)
+2. `npm run gcp-set-account` - connects to the defined gcp account
+3. `npm run gcp-set-project` - connects to the defined project
+
+### Deploying the server
+
+1. Make sure you're authenticated to GCP, and the proper account and project are configured. (see the [Connecting to gcp cloud](#connecting-to-gcp-cloud) section)
+2. `npm run build-server`
+3. `npm run deploy-server`
+
+### Deploying the signalling-connect package
+
+1. `cd signalling-connect`
+2. `npm publish`
+
+### Deploying the tic-tac-toe-ms1 game
+
+1. Make sure you're authenticated to GCP, and the proper account and project are configured. (see the [Connecting to gcp cloud](#connecting-to-gcp-cloud) section)
+2. `npm run build-ms1`
+3. `npm deploy-ms1`
