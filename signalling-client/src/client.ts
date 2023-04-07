@@ -9,7 +9,7 @@ import {
 	AnswerMessage,
 	CandidateMessage,
 	createOfferMessage,
-} from 'signalling-connect'
+} from '@onefuzzybit/signalling-connect'
 import { ConnectionStatus, SignallingClient } from './types'
 
 type SignallingClientConfig = {

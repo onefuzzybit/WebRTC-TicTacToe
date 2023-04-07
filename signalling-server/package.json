@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"scripts": {
+		"build": "tsc",
 		"watch-server": "nodemon --delay 500ms ./src/server.ts",
 		"lint": "eslint ./src/"
 	},
@@ -14,7 +15,8 @@
 		"ts-node": "^10.9.1"
 	},
 	"dependencies": {
-		"ws": "^8.13.0"
+		"ws": "^8.13.0",
+		"@onefuzzybit/signalling-connect": "*"
 	},
 	"nodemonConfig": {
 		"watch": [

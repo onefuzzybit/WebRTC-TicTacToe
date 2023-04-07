@@ -9,7 +9,7 @@ import {
 	AnswerMessage,
 	CandidateMessage,
 	OfferMessage,
-} from 'signalling-connect'
+} from '@onefuzzybit/signalling-connect'
 import { GameSocket } from './GameSocket'
 
 type UserData = { offer: OfferMessage; socket: GameSocket; match?: string }

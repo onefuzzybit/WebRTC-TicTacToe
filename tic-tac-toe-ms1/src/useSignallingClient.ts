@@ -7,9 +7,9 @@ export function useSignallingClient(setFlowState: (flowState: FlowState) => void
 	useEffect(() => {
 		if (client.current) return
 		client.current = NewSignallingClient({
-			host: 'localhost',
+			host: '130.211.73.30',
 			port: 9090,
-			timeout: 2000,
+			timeout: 5000,
 			onStatusChange: (status) => {
 				status === ConnectionStatus.LoggedIn && setFlowState(FlowState.PendingStart)
 				status === ConnectionStatus.GameOn && setFlowState(FlowState.InitiatingGame)
