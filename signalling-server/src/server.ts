@@ -40,7 +40,7 @@ function handleConnection(conn: WebSocket, message: IncomingMessage) {
 function handleClose(conn: GameSocket) {
 	console.log('Connection closed')
 	const user = conn.getGameUserId()
-	if (!user) return
+	if (!user || !users[user]) return
 
 	console.log(`Scratching user ${user}`)
 
