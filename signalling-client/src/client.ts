@@ -1,161 +1,92 @@
-import {
-	createLoginMessage,
-	OfferMessage,
-	send,
-	SignallingMessage,
-	SignallingMessages,
-	createAnswerMessage,
-	createCandidateMessage,
-	AnswerMessage,
-	CandidateMessage,
-	createOfferMessage,
-} from '@onefuzzybit/signalling-connect'
-import { ConnectionStatus, SignallingClient } from './types'
+import { SignallingMessage, SignallingMessages, PairingMessage } from '@onefuzzybit/signalling-connect'
+import { ConnectionStatus, MessageEventListener, SignallingClient, SignallingClientConfig } from './types'
+import { NewSignallingSocket } from './signallingSocket'
+import { NewPeerConnector, PeerConnector } from './peerConnector'
 
-type SignallingClientConfig = {
-	host: string
-	port: number
-	timeout: number
-	onStatusChange: (status: ConnectionStatus) => void
+function log(...args: unknown[]) {
+	console.log('[Signalling Client]', ...args)
 }
 
-//TODO: make this part of the client config.
-const rtcConfig = {
-	iceServers: [{ urls: 'stun:stun2.1.google.com:19302' }],
-}
 export function NewSignallingClient(config: SignallingClientConfig): SignallingClient {
-	let status = ConnectionStatus.NotConnected
-	let socket: WebSocket
-	let rtc: RTCPeerConnection
+	let rtc: PeerConnector
+	let id: string
+	let initiator = false
+	let dataChannel: RTCDataChannel | null = null
+	const eventListeners: MessageEventListener[] = []
+
+	const socket = NewSignallingSocket(config, handleMessage)
 
 	const client: SignallingClient = {
-		connect,
-		login,
-		outgoing: null,
-		incoming: null,
+		connect: socket.connect,
+		addConnectionStatusListener: socket.addConnectionStatusListener,
+		removeConnectionStatusListener: socket.removeConnectionStatusListener,
+		login: async () => {
+			id = await socket.login()
+		},
+		sendMessage,
+		addMessageListener,
+		removeMessageListener,
+		isInitiator: () => initiator,
 	}
 
+	function sendMessage(message: string) {
+		dataChannel.send(message)
+	}
+
+	function addMessageListener(f: MessageEventListener) {
+		eventListeners.push(f)
+	}
+
+	function removeMessageListener(f: MessageEventListener) {
+		const index = eventListeners.indexOf(f)
+		if (index > -1) eventListeners.splice(index, 1)
+	}
+
+	function onRtcMessage(event: MessageEvent) {
+		eventListeners.forEach((l) => l(event))
+	}
+
+	// TODO: this is only for debugging. use env variables.
 	;(window as unknown as { sc: SignallingClient }).sc = client
 
-	function setDataChannel(channel: RTCDataChannel, out: boolean) {
+	function setDataChannel(channel: RTCDataChannel) {
 		channel.onopen = () => {
-			console.log(`Data channel ${channel.label} open`)
-			if (out) client.outgoing = channel
-			else {
-				client.incoming = channel
-				setStatus(ConnectionStatus.GameOn)
-			}
+			log(`Data channel ${channel.label} open`)
+			dataChannel = channel
+			dataChannel.addEventListener('message', onRtcMessage)
+			socket.setConnectionStatus(ConnectionStatus.DataChannelOpen)
 		}
 		channel.onerror = (e) => dcError(channel, e)
 		channel.onmessage = (e) => dataMessage(channel, e)
 		channel.onclose = (e) => dcClose(channel, e)
 	}
 
-	async function connect() {
-		return new Promise((res, rej) => {
-			const t = setTimeout(() => {
-				status = ConnectionStatus.NotConnected
-				rej('Connection timeout')
-			}, config.timeout)
+	async function handleMessage(message: SignallingMessage) {
+		if (message.type === SignallingMessages.Pairing) return setInitiator(message)
 
-			socket = new WebSocket(`ws://${config.host}:${config.port}`)
-			socket.onopen = async () => {
-				clearTimeout(t)
-				onConnect()
-				res(null)
-			}
-		})
+		if (rtc) return rtc.onMessage(message)
+
+		log('### ERROR ###', 'Received unexpected message that cannot be processed', message)
 	}
 
-	function setStatus(statusIn: ConnectionStatus) {
-		status = statusIn
-		config.onStatusChange(status)
-	}
+	function setInitiator(message: PairingMessage) {
+		// initiator can be used by the calling application for easier sync
+		initiator = message.initiator
 
-	function onConnect() {
-		setStatus(ConnectionStatus.Connected)
-		console.log('Connected to signalling server')
-
-		// handle message whenever one arrives
-		socket.onmessage = handleMessage
-	}
-
-	async function handleMessage(event: MessageEvent) {
-		console.log('Incoming message', event)
-		let message: SignallingMessage
-		try {
-			message = JSON.parse(event.data)
-		} catch (err) {
-			console.error('Signalling message expected to be a json.', err)
-		}
-
-		switch (message.type) {
-			case SignallingMessages.Ack:
-				if (message.ack === SignallingMessages.Login) setStatus(ConnectionStatus.LoggedIn)
-				break
-			case SignallingMessages.Offer:
-				return handleOffer(message as OfferMessage)
-			case SignallingMessages.Answer:
-				return handleAnswer(message as AnswerMessage)
-			case SignallingMessages.Candidate:
-				return handleCandidate(message as CandidateMessage)
-		}
-	}
-
-	async function login() {
-		console.log('login')
-		if (!socket) await connect()
-
-		rtc = new RTCPeerConnection(rtcConfig)
-		rtc.onicecandidate = onIceCandidate
-
-		const dataChannel = rtc.createDataChannel(location.search.substring(1))
-		setDataChannel(dataChannel, true)
-
-		rtc.ondatachannel = (e) => {
-			console.log(`on data channel ${e.channel.label}`)
-			setDataChannel(e.channel, false)
-		}
-
-		const offer = await rtc.createOffer()
-		rtc.setLocalDescription(offer)
-		const login = createLoginMessage(createOfferMessage(offer))
-		send(socket, login)
-	}
-
-	async function handleOffer(message: OfferMessage) {
-		console.log('handle offer')
-		rtc.setRemoteDescription(new RTCSessionDescription(message.offer))
-		const answer = await rtc.createAnswer()
-		rtc.setLocalDescription(answer)
-		send(socket, createAnswerMessage(answer))
-	}
-
-	async function handleAnswer(message: AnswerMessage) {
-		console.log('handle answer')
-		rtc.setRemoteDescription(new RTCSessionDescription(message.answer))
-	}
-
-	async function handleCandidate(message: CandidateMessage) {
-		console.log('handle candidate')
-		rtc.addIceCandidate(new RTCIceCandidate(message.candidate))
-	}
-
-	function onIceCandidate(e: RTCPeerConnectionIceEvent) {
-		console.log('on ice candidate')
-		if (e.candidate) send(socket, createCandidateMessage(e.candidate))
+		// the initiator is not the polite node.
+		rtc = NewPeerConnector({ id, pair: message.pairId, polite: !message.initiator }, config.rtcConfig, socket, setDataChannel)
 	}
 
 	function dcError(channel: RTCDataChannel, e: Event) {
-		console.log('data channel error', e)
+		log('data channel error', e)
 	}
 
 	function dataMessage(channel: RTCDataChannel, e: Event) {
-		console.log(`data channel '${channel.label}' message`, e)
+		log(`data channel '${channel.label}' message`, e)
 	}
 
 	function dcClose(channel: RTCDataChannel, e: Event) {
-		console.log('data channel close', e)
+		log('data channel close', e)
 	}
 
 	return client

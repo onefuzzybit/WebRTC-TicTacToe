@@ -17,21 +17,25 @@ export function findWinner(board: SquareState[]) {
 	}
 }
 
-export function makeMove(board: SquareState[], square: number, state: SquareState) {
-	if (square < 0 || square > 8) throw new Error(`Invalid square index ${square}`)
-	if (state === SquareState.Empty) throw new Error(`Invalid new state ${state}`)
-	if (board[square] !== SquareState.Empty) return console.log('Square is already taken')
+export type Move = { square: number; state: SquareState }
+export function makeMove(board: SquareState[], state: FlowState, player: Player, move: Move) {
+	if (state !== FlowState.Turn) throw new Error(`Cannot make move when state is different from "Turn". current state: ${state}`)
+	if (move.square < 0 || move.square > 8) throw new Error(`Invalid square index ${move.square}`)
+	if (move.state === SquareState.Empty) throw new Error(`Invalid new state ${move.state}`)
+	if (board[move.square] !== SquareState.Empty) throw new Error('Square is already taken')
+	if (player === Player.O && move.state !== SquareState.O) throw new Error('Player O can only set square value to O')
+	if (player === Player.X && move.state !== SquareState.X) throw new Error('Player X can only set square value to X')
 
 	const newBoard = [...board]
-	newBoard.splice(square, 1, state)
+	newBoard.splice(move.square, 1, move.state)
 
 	const winner = findWinner(newBoard)
-	let newFlowState: FlowState = state === SquareState.O ? FlowState.TurnX : FlowState.TurnO
+	let newFlowState: FlowState = FlowState.Turn
 	if (winner === Player.X) newFlowState = FlowState.WinnerX
 	if (winner === Player.O) newFlowState = FlowState.WinnerO
 
 	// if there's no winner and no more empty squares - draw.
 	if (!winner && newBoard.findIndex((s) => s === SquareState.Empty) === -1) newFlowState = FlowState.Draw
 
-	return { newBoard, newFlowState }
+	return { world: newBoard, state: newFlowState, player: player === Player.O ? Player.X : Player.O }
 }

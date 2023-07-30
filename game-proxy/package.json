@@ -1,0 +1,38 @@
+{
+	"name": "@onefuzzybit/game-proxy",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./dist/game-proxy.umd.js",
+	"module": "./dist/game-proxy.mjs",
+	"types": "./dist/game-proxy.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/game-proxy.mjs",
+			"require": "./dist/game-proxy.umd.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "vite build",
+		"watch-game-proxy": "vite build --watch",
+		"lint": "eslint ./src/"
+	},
+	"author": "",
+	"private": true,
+	"peerDependencies": {
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
+	},
+	"devDependencies": {
+		"@types/lodash": "^4.14.194",
+		"@types/node": "^18.15.5",
+		"signalling-client": "*",
+		"vite": "^4.2.1",
+		"vite-plugin-dts": "^2.1.0"
+	},
+	"dependencies": {
+		"lodash": "^4.17.21"
+	}
+}

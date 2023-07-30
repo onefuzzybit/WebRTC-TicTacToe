@@ -1,35 +1,35 @@
 import { Layout } from './Layout'
-import { useState } from 'react'
-import { FlowState, Player } from './types'
+import { FlowState } from './types'
 import { WelcomeScreen } from './WelcomeScreen'
-import { useSignallingClient } from './useSignallingClient'
-import { useRandomGameStart } from './useRandomGameStart'
-import { GameStateProvider } from './StateProvider'
 import { GameBoard } from './GameBoard'
+import { GameProvider, useGameContext } from './config'
 
 export function App() {
-	const [flowState, setFlowState] = useState<FlowState>(FlowState.EstablishingConnection)
-	const [player, setPlayer] = useState<Player>()
+	return (
+		<Layout>
+			<GameProvider>
+				<TicTacToe />
+			</GameProvider>
+		</Layout>
+	)
+}
 
-	const client = useSignallingClient(setFlowState)
-	useRandomGameStart(client, setPlayer, setFlowState)
+export function TicTacToe() {
+	const { game } = useGameContext()
 
 	function render() {
-		switch (flowState) {
+		if (!game) return <WelcomeScreen flowState={FlowState.EstablishingConnection} />
+
+		switch (game.state()) {
+			case undefined:
+				return <WelcomeScreen flowState={FlowState.EstablishingConnection} />
 			case FlowState.EstablishingConnection:
 			case FlowState.PendingStart:
 			case FlowState.InitiatingGame:
-				return <WelcomeScreen flowState={flowState} />
+				return <WelcomeScreen flowState={game.state()} />
 			default:
-				return (
-					<>
-						<GameStateProvider side={player} flowState={flowState} setFlowState={setFlowState} client={client}>
-							<GameBoard />
-						</GameStateProvider>
-					</>
-				)
+				return <GameBoard />
 		}
 	}
-
-	return <Layout>{render()}</Layout>
+	return render()
 }

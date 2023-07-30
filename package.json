@@ -12,14 +12,15 @@
 		"./signalling-client",
 		"./signalling-connect",
 		"./signalling-server",
-		"./tic-tac-toe-ms1"
+		"./tic-tac-toe-ms1",
+		"./game-proxy"
 	],
 	"scripts": {
 		"pretty": "prettier --write .",
 		"gcp-set-account": "gcloud config set account onefuzzybit@gmail.com",
 		"gcp-login": "gcloud auth login",
 		"gcp-set-project": "gcloud config set project one-fuzzy-bit",
-		"gcp-get-server-ip": "gcloud compute instances describe webrtc-signalling-server --zone=europe-west1-b | grep natIP | awk '{print $2}'",
+		"gcp-get-server-ip": "gcloud compute instances describe webrtc-signalling-turn-server --zone=europe-west1-b | grep natIP | awk '{print $2}'",
 		"ssh-server": "ssh onefuzzybit@$(npm run gcp-get-server-ip --silent)",
 		"build-server": "npm run build -w signalling-server",
 		"deploy-server-npmrc": "scp -r ~/.npmrc onefuzzybit@$(npm run gcp-get-server-ip --silent):~",
@@ -28,7 +29,7 @@
 		"deploy-server": "npm run deploy-server-code && npm run deploy-server-npmrc && npm run restart-remote-server",
 		"deploy-connect": "npm publish -w @onefuzzybit/signalling-connect",
 		"build-ms1": "npm run build -w tic-tac-toe-ms1",
-		"deploy-ms1": "gcloud storage cp --recursive tic-tac-toe-ms1/dist/* gs://webrtc-tic-tac-toe-ms1"
+		"deploy-ms1": "npm run build-ms1 && gcloud storage cp --recursive tic-tac-toe-ms1/dist/* gs://webrtc-tic-tac-toe-ms1 --cache-control \"max-age=60\""
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.57.0",

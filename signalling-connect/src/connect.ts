@@ -1,13 +1,13 @@
 import {
 	AckMessage,
-	AnswerMessage,
 	CandidateMessage,
 	LoginMessage,
-	OfferMessage,
+	DescriptionMessage as DescriptionMessage,
 	SignallingMessage,
 	SignallingMessages,
 	SIGNAL_MESSAGE_IDENTIFIER,
 	Sender,
+	PairingMessage,
 } from './types'
 import { nanoid } from 'nanoid'
 
@@ -19,6 +19,10 @@ function baseMessage() {
 	return { sanity: SIGNAL_MESSAGE_IDENTIFIER, id: uuid }
 }
 
+export function setId(id: string) {
+	uuid = id
+}
+
 export function validate(message: SignallingMessage) {
 	if (typeof message !== 'object' || message.sanity !== SIGNAL_MESSAGE_IDENTIFIER) {
 		const print = typeof message === 'object' ? JSON.stringify(message) : message
@@ -26,16 +30,12 @@ export function validate(message: SignallingMessage) {
 	}
 }
 
-export function createLoginMessage(offer: OfferMessage): LoginMessage {
-	return { type: SignallingMessages.Login, ...baseMessage(), offer }
+export function createLoginMessage(): LoginMessage {
+	return { type: SignallingMessages.Login, ...baseMessage() }
 }
 
-export function createOfferMessage(offer: RTCSessionDescriptionInit): OfferMessage {
-	return { type: SignallingMessages.Offer, ...baseMessage(), offer }
-}
-
-export function createAnswerMessage(answer: RTCSessionDescriptionInit): AnswerMessage {
-	return { type: SignallingMessages.Answer, ...baseMessage(), answer }
+export function createDescriptionMessage(description: RTCSessionDescriptionInit): DescriptionMessage {
+	return { type: SignallingMessages.Description, ...baseMessage(), description }
 }
 
 export function createCandidateMessage(candidate: RTCIceCandidate): CandidateMessage {
@@ -44,6 +44,10 @@ export function createCandidateMessage(candidate: RTCIceCandidate): CandidateMes
 
 export function createAckMessage(ack: SignallingMessages): AckMessage {
 	return { type: SignallingMessages.Ack, sanity: SIGNAL_MESSAGE_IDENTIFIER, ack, id: 'server' }
+}
+
+export function createPairingMessage(pairId: string, initiator: boolean): PairingMessage {
+	return { type: SignallingMessages.Pairing, ...baseMessage(), initiator, pairId }
 }
 
 export function send(socket: Sender, message: SignallingMessage) {

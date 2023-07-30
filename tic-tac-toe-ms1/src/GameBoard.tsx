@@ -1,30 +1,30 @@
 import { memo } from 'react'
 import { Board } from './Board'
-import { useGameState } from './StateProvider'
 import { FlowState, Player } from './types'
+import { useGameContext } from './config'
+import { SquareState } from './types'
 
-function myTurn(flowState: FlowState, side: Player) {
-	return (flowState === FlowState.TurnX && side === Player.X) || (flowState === FlowState.TurnO && side === Player.O)
-}
-function statusStr(flowState: FlowState, side: Player) {
-	if (myTurn(flowState, side)) return 'Your turn'
-	if (flowState === FlowState.TurnX || flowState === FlowState.TurnO) return 'Opponent`s turn'
+function statusStr(flowState: FlowState, side: Player, me: Player) {
 	switch (flowState) {
+		case FlowState.Turn:
+			if (me === side) return 'Your turn'
+			else return 'Opponent`s turn'
 		case FlowState.Draw:
 			return 'Game ended with draw'
 		case FlowState.MismatchError:
 			return 'Game aborted due to one of the side trying to cheat!'
 		case FlowState.WinnerO:
-			return `You ${side === Player.O ? 'Won :-)' : 'lost :-('}`
+			return `You ${me === Player.O ? 'Won :-)' : 'lost :-('}`
 		case FlowState.WinnerX:
-			return `You ${side === Player.X ? 'Won :-)' : 'lost :-('}`
+			return `You ${me === Player.X ? 'Won :-)' : 'lost :-('}`
 	}
 	return ''
 }
 
 export function _GameBoard() {
-	const state = useGameState()
-	const status = statusStr(state.flowState, state.side)
+	const { game } = useGameContext()
+	const status = statusStr(game.state(), game.turn(), game.me())
+	const sign = game.me() === Player.O ? SquareState.O : SquareState.X
 
 	return (
 		<div style={{ position: 'relative', height: '100%' }}>
@@ -41,7 +41,7 @@ export function _GameBoard() {
 			>
 				{status}
 			</div>
-			<Board state={state.board} onSquareClick={myTurn(state.flowState, state.side) ? state.setSquare : undefined} />
+			<Board state={game.world()} onSquareClick={(s: number) => game.turn() === game.me() ? game.makeMove({ square: s, state: sign}) : undefined} />
 		</div>
 	)
 }

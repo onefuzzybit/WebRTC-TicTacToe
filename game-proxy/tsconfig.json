@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"target": "ESNext",
+		"module": "ESNext",
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"types": ["vite/client"],
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"declaration": true,
+		"sourceMap": true,
+		"outDir": "./dist",
+		"jsx": "react-jsx"
+	},
+	"include": ["./src/**/*.ts", "src/**/*.tsx"]
+}

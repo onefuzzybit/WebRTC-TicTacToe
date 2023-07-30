@@ -8,6 +8,7 @@ export default defineConfig({
 		alias: {
 			'signalling-connect': resolve(__dirname, '../signalling-connect/src/connect.ts'),
 			'signalling-client': resolve(__dirname, '../signalling-client/src/client.ts'),
+			'@onefuzzybit/game-proxy': resolve(__dirname, '../game-proxy/src/index.ts'),
 		},
 	},
 	plugins: [react()],

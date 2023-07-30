@@ -6,9 +6,9 @@ export const SIGNAL_MESSAGE_IDENTIFIER: SIGNAL_MESSAGE_IDENTIFIER_TYPE = '__SIGN
 export enum SignallingMessages {
 	Login = 'Login',
 	Ack = 'Ack', // acknowledge message
-	Offer = 'Offer',
-	Answer = 'Answer',
+	Description = 'Description',
 	Candidate = 'Candidate',
+	Pairing = 'Pairing',
 }
 
 export interface SignallingMessageBase {
@@ -18,7 +18,6 @@ export interface SignallingMessageBase {
 
 export interface LoginMessage extends SignallingMessageBase {
 	type: SignallingMessages.Login
-	offer: OfferMessage
 }
 
 export interface AckMessage extends SignallingMessageBase {
@@ -26,14 +25,9 @@ export interface AckMessage extends SignallingMessageBase {
 	ack: SignallingMessages
 }
 
-export interface OfferMessage extends SignallingMessageBase {
-	offer: RTCSessionDescriptionInit
-	type: SignallingMessages.Offer
-}
-
-export interface AnswerMessage extends SignallingMessageBase {
-	answer: RTCSessionDescriptionInit
-	type: SignallingMessages.Answer
+export interface DescriptionMessage extends SignallingMessageBase {
+	description: RTCSessionDescriptionInit
+	type: SignallingMessages.Description
 }
 
 export interface CandidateMessage extends SignallingMessageBase {
@@ -41,7 +35,13 @@ export interface CandidateMessage extends SignallingMessageBase {
 	candidate: RTCIceCandidate
 }
 
-export type SignallingMessage = LoginMessage | AckMessage | OfferMessage | CandidateMessage | AnswerMessage
+export interface PairingMessage extends SignallingMessageBase {
+	type: SignallingMessages.Pairing
+	initiator: boolean
+	pairId: string
+}
+
+export type SignallingMessage = LoginMessage | AckMessage | DescriptionMessage | CandidateMessage | PairingMessage
 
 export interface Sender {
 	send(data: string): void

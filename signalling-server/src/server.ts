@@ -6,19 +6,22 @@ import {
 	send,
 	SignallingMessages,
 	validate,
-	AnswerMessage,
+	setId,
+	createPairingMessage,
+	DescriptionMessage,
 	CandidateMessage,
-	OfferMessage,
 } from '@onefuzzybit/signalling-connect'
 import { GameSocket } from './GameSocket'
 
-type UserData = { offer: OfferMessage; socket: GameSocket; match?: string }
+type PairingData = { initiator: string; pair: string; offer?: DescriptionMessage }
+type UserData = { socket: GameSocket; pairing?: PairingData }
 type Users = { [id: string]: UserData }
 
 const users: Users = {}
 const pendingUsers: string[] = []
 
 function main() {
+	setId('server')
 	const port = 9090
 	const websocketServer = new Server({ port })
 	websocketServer.on('connection', handleConnection)
@@ -41,9 +44,12 @@ function handleClose(conn: GameSocket) {
 
 	console.log(`Scratching user ${user}`)
 
-	// User has abandoned. remove its match.
-	const match = users[user].match
-	if (match) delete users[match].match
+	// User has abandoned. remove its match if exists.
+	const pairing = users[user].pairing
+	if (pairing) {
+		const match = pairing.initiator === conn.getGameUserId() ? pairing.pair : pairing.initiator
+		if (match) delete users[match].pairing
+	}
 
 	// remove the user
 	delete users[user]
@@ -73,11 +79,9 @@ function handleMessage(conn: GameSocket, dataIn: RawData, _binary: boolean) {
 		case SignallingMessages.Login:
 			handleLogin(conn, message)
 			break
-		case SignallingMessages.Answer:
-			handleAnswer(conn, message)
-			break
+		case SignallingMessages.Description:
 		case SignallingMessages.Candidate:
-			handleCandidate(conn, message)
+			handleNegotiationMessage(conn, message)
 			break
 	}
 
@@ -86,14 +90,15 @@ function handleMessage(conn: GameSocket, dataIn: RawData, _binary: boolean) {
 }
 
 function handleLogin(conn: GameSocket, message: LoginMessage) {
-	// if already logged in - do nothing
-	if (users[message.id]) return
-
 	// set connection user
 	conn.setGameUserId(message.id)
 
+	// if already logged in - do nothing
+	if (users[message.id]) return
+
 	// register user to users list
-	users[message.id] = { socket: conn, offer: message.offer }
+	users[message.id] = { socket: conn }
+	const newUser = users[message.id]
 
 	// if there are no pending users - register as pending
 	if (!pendingUsers.length) {
@@ -101,21 +106,26 @@ function handleLogin(conn: GameSocket, message: LoginMessage) {
 		return
 	}
 
-	// if we got here, there's a pending user. let's start the handshake by sending an offer
-	const match = pendingUsers.shift() as string
-	users[match].match = message.id
-	users[message.id].match = match
-	send(conn, users[match].offer)
+	// if we got here, there's a pending user.
+	const firstUserId = pendingUsers.shift() as string
+	const firstUser = users[firstUserId]
+
+	const pairing: PairingData = { initiator: firstUserId, pair: message.id }
+	firstUser.pairing = pairing
+	newUser.pairing = pairing
+
+	// the first user will be the initiator
+	send(firstUser.socket, createPairingMessage(message.id, true))
+
+	// The new user get's a pairing message as well.
+	send(conn, createPairingMessage(firstUserId, false))
 }
 
-function handleAnswer(conn: WebSocket, message: AnswerMessage) {
-	const match = users[message.id].match
-	if (!match) return
-	send(users[match].socket, message)
-}
+function handleNegotiationMessage(conn: WebSocket, message: DescriptionMessage | CandidateMessage) {
+	const pairing = users[message.id].pairing
+	if (!pairing) return
 
-function handleCandidate(conn: WebSocket, message: CandidateMessage) {
-	const match = users[message.id].match
+	const match = pairing.initiator === message.id ? pairing.pair : pairing.initiator
 	if (!match) return
 	send(users[match].socket, message)
 }

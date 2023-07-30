@@ -6,7 +6,7 @@
 		{
 			"label": "Run Watch Terminals",
 			"type": "shell",
-			"dependsOn": ["tic-tac-toe", "signalling-connect", "signalling-server", "signalling-client"],
+			"dependsOn": ["tic-tac-toe", "signalling-connect", "signalling-server", "signalling-client", "game-proxy"],
 			"problemMatcher": []
 		},
 		{
@@ -32,6 +32,23 @@
 			"script": "watch-connect",
 			"options": {
 				"cwd": "${workspaceFolder}/signalling-connect"
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"group": "dev"
+			}
+		},
+		{
+			"label": "game-proxy",
+			"type": "npm",
+			"script": "watch-game-proxy",
+			"options": {
+				"cwd": "${workspaceFolder}/game-proxy"
 			},
 			"presentation": {
 				"echo": true,
