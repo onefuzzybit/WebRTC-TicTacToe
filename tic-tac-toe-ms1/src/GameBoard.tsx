@@ -41,7 +41,10 @@ export function _GameBoard() {
 			>
 				{status}
 			</div>
-			<Board state={game.world()} onSquareClick={(s: number) => game.turn() === game.me() ? game.makeMove({ square: s, state: sign}) : undefined} />
+			<Board
+				state={game.world()}
+				onSquareClick={(s: number) => (game.turn() === game.me() ? game.makeMove({ square: s, state: sign }) : undefined)}
+			/>
 		</div>
 	)
 }

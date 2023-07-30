@@ -25,10 +25,27 @@ const game = gameGenerator(GAME_TYPES.TurnBased2Players, {
 		rtcConfig: {
 			iceServers: [
 				{
-					urls: ['turn:openrelay.metered.ca:80'],
-					username: 'openrelayproject',
-					credential: 'openrelayproject',
-					// credentialType: 'password',
+					urls: 'stun:stun.relay.metered.ca:80',
+				},
+				{
+					urls: 'turn:a.relay.metered.ca:80',
+					username: 'fa1b42917e570ac92413f878',
+					credential: '2Mq0YI5YL9m5p9pu',
+				},
+				{
+					urls: 'turn:a.relay.metered.ca:80?transport=tcp',
+					username: 'fa1b42917e570ac92413f878',
+					credential: '2Mq0YI5YL9m5p9pu',
+				},
+				{
+					urls: 'turn:a.relay.metered.ca:443',
+					username: 'fa1b42917e570ac92413f878',
+					credential: '2Mq0YI5YL9m5p9pu',
+				},
+				{
+					urls: 'turn:a.relay.metered.ca:443?transport=tcp',
+					username: 'fa1b42917e570ac92413f878',
+					credential: '2Mq0YI5YL9m5p9pu',
 				},
 				// {
 				// 	urls: ['turn:35.210.239.175:3478'],
