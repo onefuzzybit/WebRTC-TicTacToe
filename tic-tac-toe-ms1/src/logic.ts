@@ -10,11 +10,17 @@ const winningCombos = [
 	[1, 4, 7],
 	[2, 5, 8],
 ]
+
+export function getWinningCombo(board: SquareState[], player: Player) {
+	return winningCombos.find((c) => c.every((i) => board[i] === (player === Player.X ? SquareState.X : SquareState.O)))
+}
+
 export function findWinner(board: SquareState[]) {
-	for (const combo of winningCombos) {
-		if (combo.every((i) => board[i] === SquareState.O)) return Player.O
-		if (combo.every((i) => board[i] === SquareState.X)) return Player.X
-	}
+	const oWinner = getWinningCombo(board, Player.O)
+	if (oWinner) return Player.O
+
+	const xWinner = getWinningCombo(board, Player.X)
+	if (xWinner) return Player.X
 }
 
 export type Move = { square: number; state: SquareState }
@@ -35,7 +41,7 @@ export function makeMove(board: SquareState[], state: FlowState, player: Player,
 	if (winner === Player.O) newFlowState = FlowState.WinnerO
 
 	// if there's no winner and no more empty squares - draw.
-	if (!winner && newBoard.findIndex((s) => s === SquareState.Empty) === -1) newFlowState = FlowState.Draw
+	if (typeof winner === undefined && newBoard.findIndex((s) => s === SquareState.Empty) === -1) newFlowState = FlowState.Draw
 
 	return { world: newBoard, state: newFlowState, player: player === Player.O ? Player.X : Player.O }
 }

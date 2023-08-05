@@ -10,5 +10,7 @@ pkill -9 -f node
 # npm install
 cd signalling-server && npm install
 
+cp ./.env.prod ./.env
+
 #run the server
 node "$SCRIPT_DIR/dist/server.js"

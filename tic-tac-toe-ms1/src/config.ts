@@ -3,6 +3,10 @@ import { FlowState, Player, SquareState } from './types'
 import { makeMove } from './logic'
 import { useContext } from 'react'
 
+if (!import.meta.env.VITE_SIGNALLING_HOST) throw new Error('Missing env variable VITE_SIGNALLING_HOST')
+if (!import.meta.env.VITE_SSL) throw new Error('Missing env variable VITE_SIGNALLING_HOST')
+if (!import.meta.env.VITE_SIGNALLING_PORT) throw new Error('Missing env variable VITE_SIGNALLING_HOST')
+
 const game = gameGenerator(GAME_TYPES.TurnBased2Players, {
 	players: { count: 2, names: [Player.O, Player.X] },
 	exState: {},
@@ -18,9 +22,9 @@ const game = gameGenerator(GAME_TYPES.TurnBased2Players, {
 	initWorldState: Array(9).fill(SquareState.Empty) as SquareState[],
 	makeMove,
 	connectionConfig: {
-		// host: 'signalling.one-fuzzy-bit.com',
-		host: 'localhost',
-		port: 9090,
+		host: import.meta.env.VITE_SIGNALLING_HOST,
+		ssl: import.meta.env.VITE_SSL === 'true',
+		port: import.meta.env.VITE_SIGNALLING_PORT,
 		timeout: 5000,
 		rtcConfig: {
 			iceServers: [
@@ -47,13 +51,6 @@ const game = gameGenerator(GAME_TYPES.TurnBased2Players, {
 					username: 'fa1b42917e570ac92413f878',
 					credential: '2Mq0YI5YL9m5p9pu',
 				},
-				// {
-				// 	urls: ['turn:35.210.239.175:3478'],
-				// 	username: 'turn',
-				// 	credential: 'turnpass',
-				// 	credentialType: 'password',
-				// 	iceTransportPolicy: 'relay',
-				// },
 			],
 		},
 	},

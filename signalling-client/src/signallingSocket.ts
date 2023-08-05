@@ -17,7 +17,7 @@ export function NewSignallingSocket(config: SignallingClientConfig, onMessage: (
 				rej('Connection timeout')
 			}, config.timeout)
 
-			socket = new WebSocket(`ws://${config.host}:${config.port}`)
+			socket = new WebSocket(`${config.ssl ? 'wss://' : 'ws://'}${config.host}:${config.port}/ws`)
 			socket.onopen = async () => {
 				clearTimeout(t)
 				onConnect()

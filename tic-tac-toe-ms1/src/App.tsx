@@ -31,5 +31,10 @@ export function TicTacToe() {
 				return <GameBoard />
 		}
 	}
-	return render()
+	return (
+		<>
+			<div style={{ position: 'absolute', top: 0, left: 0 }}>version 1.0.5</div>
+			{render()}
+		</>
+	)
 }

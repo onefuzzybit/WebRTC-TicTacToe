@@ -14,7 +14,8 @@ The project is built as a monorepo with 4 components (folders):
 1. signalling-connect - a type library to share types and message code between the signalling client and signalling server. Uses signalling-connect.
 2. signalling-server - websocket server which functions as a bootstrap node for new players - connecting them to other players.
 3. signalling-client - a browser side library that communicates with the signalling server to handle the connection
-4. tic-tac-toe-ms1 - React app that implements the peer-2-peer tic-tac-toe game over a connection handler. It uses the signalling-client to connect to the signalling-server and pass messages to peer.
+4. game-proxy - a library built on top of the signalling client, which provides type-based game behavior. In this stage of development the only game type is to player turn based games.
+5. tic-tac-toe-ms1 - React app that implements the peer-2-peer tic-tac-toe game over a connection handler. It uses the signalling-client to connect to the signalling-server and pass messages to peer.
 
 ## Building and running the project.
 
@@ -71,6 +72,15 @@ resources names:
 1. Make sure you're authenticated to GCP, and the proper account and project are configured. (see the [Connecting to gcp cloud](#connecting-to-gcp-cloud) section)
 2. `npm run build-server`
 3. `npm run deploy-server`
+
+#### Signalling server SSL certificates
+
+The signalling server has an SSL certificate installed that is issued by letsencrypt.
+In order to renew the certificate, one needs to:
+
+1. ssh into the server
+2. run `sudo certbot certonly --standalone`
+3. when the prompt asks for the domain, set it to `signalling.one-fuzzy-bit.com`
 
 ### Deploying the signalling-connect package
 

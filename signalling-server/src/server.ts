@@ -1,4 +1,4 @@
-import { Server, WebSocket, RawData } from 'ws'
+import { WebSocket, RawData } from 'ws'
 import { IncomingMessage } from 'http'
 import {
 	createAckMessage,
@@ -12,6 +12,9 @@ import {
 	CandidateMessage,
 } from '@onefuzzybit/signalling-connect'
 import { GameSocket } from './GameSocket'
+import { socketServer } from './SocketServer'
+import { config } from 'dotenv'
+config()
 
 type PairingData = { initiator: string; pair: string; offer?: DescriptionMessage }
 type UserData = { socket: GameSocket; pairing?: PairingData }
@@ -22,10 +25,7 @@ const pendingUsers: string[] = []
 
 function main() {
 	setId('server')
-	const port = 9090
-	const websocketServer = new Server({ port })
-	websocketServer.on('connection', handleConnection)
-	console.log(`Webserver waiting for connections on port ${port}...`)
+	socketServer(handleConnection)
 }
 
 main()

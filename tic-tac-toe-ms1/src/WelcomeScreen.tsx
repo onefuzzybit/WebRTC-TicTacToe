@@ -23,7 +23,7 @@ export function WelcomeScreen(p: { flowState: FlowState }) {
 	return (
 		<>
 			<FloatingMessage text={message} />
-			<Board state={Array(9).fill(SquareState.Empty)} />
+			<Board state={Array(9).fill(SquareState.Empty)} active={false} />
 		</>
 	)
 }

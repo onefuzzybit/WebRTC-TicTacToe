@@ -21,6 +21,7 @@ export type SignallingClientConfig = {
 	port: number
 	timeout: number
 	rtcConfig: RTCConfiguration
+	ssl: boolean
 }
 
 export type ConnectionStatusListener = (status: ConnectionStatus) => void
