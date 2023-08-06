@@ -41,7 +41,7 @@ export function makeMove(board: SquareState[], state: FlowState, player: Player,
 	if (winner === Player.O) newFlowState = FlowState.WinnerO
 
 	// if there's no winner and no more empty squares - draw.
-	if (typeof winner === undefined && newBoard.findIndex((s) => s === SquareState.Empty) === -1) newFlowState = FlowState.Draw
+	if (winner === undefined && newBoard.findIndex((s) => s === SquareState.Empty) === -1) newFlowState = FlowState.Draw
 
 	return { world: newBoard, state: newFlowState, player: player === Player.O ? Player.X : Player.O }
 }
