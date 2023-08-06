@@ -17,7 +17,7 @@ export function Board({ state, onSquareClick, winner, highlight, active }: Board
 				gridGap: '5px',
 				gridTemplateColumns: '1fr 1fr 1fr',
 				gridTemplateRows: '1fr 1fr 1fr',
-				height: '100%',
+				width: '100%',
 				aspectRatio: '1/1',
 				borderRadius: '16px',
 				background: 'radial-gradient(at left 8px top 8px	, rgba(255,255,255,1) 0%, rgba(35,164,207,1) 6%, rgba(3,117,180,1) 100%)',

@@ -15,10 +15,12 @@ export function useSmallerSide() {
 	return side
 }
 
+const HEADER_HEIGHT = 36
+
 export function Layout({ children }: { children: ReactNode }) {
 	const smallerSide = useSmallerSide()
 
-	const padding = smallerSide < 500 ? '50px' : '5%'
+	const padding = smallerSide < 500 ? '30px' : '5%'
 
 	return (
 		<div
@@ -26,8 +28,8 @@ export function Layout({ children }: { children: ReactNode }) {
 				display: 'flex',
 				justifyContent: 'stretch',
 				alignItems: 'stretch',
-				aspectRatio: '1/1',
-				width: smallerSide,
+				height: smallerSide,
+				width: `${smallerSide - HEADER_HEIGHT}px`,
 				boxSizing: 'border-box',
 				padding,
 				margin: 'auto',

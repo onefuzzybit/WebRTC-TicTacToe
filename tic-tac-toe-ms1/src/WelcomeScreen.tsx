@@ -38,8 +38,10 @@ export function FloatingMessage(p: { text: string }) {
 				transform: 'translateX(-50%)',
 				textAlign: 'center',
 				padding: '20px 30px',
-				border: 'solid 1px #504050',
-				backgroundColor: 'lightgray',
+				border: 'solid 1px #B9DDE7',
+				backgroundColor: '#f5eefe',
+				borderRadius: '8px',
+				boxShadow: '4px 4px 8px 2px rgba(20, 20, 20, 0.3)',
 			}}
 		>
 			{p.text}
